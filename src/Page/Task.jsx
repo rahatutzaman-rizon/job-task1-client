@@ -5,7 +5,7 @@ const App = () => {
 
   useEffect(() => {
     // Fetch data from the API
-    fetch('http://localhost:5000/task')
+    fetch('https://job1task.onrender.com/task')
       .then((response) => response.json())
       .then((fetchedData) => setData(fetchedData))
       .catch((error) => console.error('Error fetching data:', error));

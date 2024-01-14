@@ -8,15 +8,35 @@ import { FaClipboardList } from "react-icons/fa6";
 import { FaComments } from "react-icons/fa6";
 import { FaLink } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
+
+import ModalForm from './ModalForm';
 
 
 const App = () => {
   const [data, setData] = useState([]);
+  const [link,setLink] =useState([]);
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     // Fetch data from the API
-    fetch('http://localhost:5000/task')
+    fetch('https://job1task.onrender.com/link')
+      .then((response) => response.json())
+      .then((fetchedData) => setLink(fetchedData))
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
+
+  useEffect(() => {
+    // Fetch data from the API
+    fetch('https://job1task.onrender.com/task')
       .then((response) => response.json())
       .then((fetchedData) => setData(fetchedData))
       .catch((error) => console.error('Error fetching data:', error));
@@ -26,7 +46,7 @@ const App = () => {
   return (
     <div className="grid grid-cols-1 gap-2 p-2 ">
       {data.map((item, index) => (
-        <div key={index} className="p-1  rounded mb-3 ">
+        <div key={index} className="p-1  rounded mb-3 bg-gray-300">
          {/* image */}
          <div className='flex gap-4 max-w-xs'>
       <div className='flex items-center '>
@@ -64,9 +84,22 @@ const App = () => {
         <span className='w-5 h-4 rounded-full bg-stone-300 font-medium text-xs'>12+</span>
         <FaComments />
       <span className='text-xs font-medium '>{item.chatlist_count}</span>
-      {/* <Link to="/"><FaLink></FaLink></Link> */}
+  
+      <div>
+      <button
+        onClick={handleOpenModal}
+        className="mt-2"
+      >
       <FaLink></FaLink>
-      <span className='text-xs font-medium'>{item.attach_file_count}</span>
+      </button>
+
+      {isModalOpen && <ModalForm onClose={handleCloseModal} />}
+    </div>
+
+
+      
+      
+      <span className='text-xs font-medium'>{link.length}</span>
       <FaCalendarDays></FaCalendarDays>
       <span className='text-xs font-medium'>{item.date}</span>
       </div>
